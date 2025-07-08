@@ -17,3 +17,11 @@ This project focuses on establishing a CI/CD pipeline for managing Google Cloud 
   - firewall/
   - main.tf
 - cloudbuild.yaml
+
+`environments/`: Contains subfolders (`dev`, `prod`) for logical separation of infrastructure configurations for different environments. Each subfolder has its own Terraform configuration.
+
+`main.tf`: Defines the GCP resources (e.g., VPC network, subnet, Compute Engine instance, firewall rule) for that specific environment.
+
+`variables.tf`: Defines input variables for the Terraform configuration.
+
+`backend.tf`: Configures the Terraform remote state to use the Cloud Storage bucket you created.
