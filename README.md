@@ -28,6 +28,13 @@ This project focuses on establishing a CI/CD pipeline for managing Google Cloud 
 
 `cloudbuild.yaml`: This is the core of the CI/CD pipeline, defining the conditional execution of `terraform plan` and `terraform apply` based on the Git branch.
 
+- The tf plan step determines whether to plan for a specific environment (if the branch name matches an environments subdirectory) or for all environments (for feature branches).
+
+- This validation allows team members to review the impact of proposed infrastructure changes (what resources will be created/modified/destroyed) before merging to an environment branch.
+
+- The tf apply step is then conditionally executed only for dev or prod branches, ensuring that infrastructure changes are only applied when merged into designated environment branches. This ensures collaborative infrastructure management and prevents unintended deployments.
+
+
 ## How to make this work ?
 
 ## Test it out and validate
