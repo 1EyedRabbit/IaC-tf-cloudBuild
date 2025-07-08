@@ -25,3 +25,7 @@ This project focuses on establishing a CI/CD pipeline for managing Google Cloud 
 `variables.tf`: Defines input variables for the Terraform configuration.
 
 `backend.tf`: Configures the Terraform remote state to use the Cloud Storage bucket you created.
+
+## How to make this work ?
+
+## Test it out and validate
