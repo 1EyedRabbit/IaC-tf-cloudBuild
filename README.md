@@ -26,6 +26,8 @@ This project focuses on establishing a CI/CD pipeline for managing Google Cloud 
 
 `backend.tf`: Configures the Terraform remote state to use the Cloud Storage bucket you created.
 
+`cloudbuild.yaml`: This is the core of the CI/CD pipeline, defining the conditional execution of `terraform plan` and `terraform apply` based on the Git branch.
+
 ## How to make this work ?
 
 ## Test it out and validate
