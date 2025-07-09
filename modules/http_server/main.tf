@@ -23,6 +23,10 @@ resource "google_compute_instance" "http_server" {
     }
   }
 
+    labels = {
+    build_id = var.build_id
+  }
+
   # Apply the firewall rule to allow external IPs to access this instance
   tags = ["http-server"]
 }

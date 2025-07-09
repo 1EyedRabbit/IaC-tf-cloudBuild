@@ -16,4 +16,9 @@ module "vpc" {
   secondary_ranges = {
     "${var.env}-subnet-01" = []
   }
+
+    labels = {
+    build_id = var.build_id
+  }
+  
 }
