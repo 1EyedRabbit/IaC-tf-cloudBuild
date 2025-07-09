@@ -6,8 +6,8 @@ provider "google" {
   project = "${var.project}"
 }
 
-module "vpc_network" {
-  source  = "../../modules/vpc_network"
+module "vpc" {
+  source  = "../../modules/vpc"
   project = "${var.project}"
   env     = "${local.env}"
 }
@@ -15,11 +15,11 @@ module "vpc_network" {
 module "http_server" {
   source  = "../../modules/http_server"
   project = "${var.project}"
-  subnet  = "${module.vpc_network.subnet}"
+  subnet  = "${module.vpc.subnet}"
 }
 
 module "firewall" {
   source  = "../../modules/firewall"
   project = "${var.project}"
-  subnet  = "${module.vpc_network.subnet}"
+  subnet  = "${module.vpc.subnet}"
 }
