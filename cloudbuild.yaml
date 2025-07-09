@@ -85,7 +85,7 @@ steps:
         if [ "$BUILD_STATUS" != "SUCCESS" ]; then
           cd environments/$BRANCH_NAME
           terraform init
-          terraform destroy -var="build_id=$_BUILD_ID" -auto-approve
+          terraform destroy -var="build_id=$BUILD_ID" -auto-approve
         fi
   waitFor: ['-']
 
