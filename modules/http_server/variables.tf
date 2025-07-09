@@ -1,1 +1,2 @@
-Need to write the code
+variable "project" {}
+variable "subnet" {}
