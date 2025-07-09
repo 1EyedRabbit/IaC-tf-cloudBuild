@@ -1,1 +1,3 @@
-Need to write the code
+terraform {
+  required_version = "~> 1.0.0"
+}
