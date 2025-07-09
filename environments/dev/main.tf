@@ -15,11 +15,11 @@ module "vpc_network" {
 module "http_server" {
   source  = "../../modules/http_server"
   project = "${var.project}"
-  subnet  = "${module.vpc.subnet}"
+  subnet  = "${module.vpc_network.subnet}"
 }
 
 module "firewall" {
   source  = "../../modules/firewall"
   project = "${var.project}"
-  subnet  = "${module.vpc.subnet}"
+  subnet  = "${module.vpc_network.subnet}"
 }
