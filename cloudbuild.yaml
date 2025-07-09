@@ -57,7 +57,7 @@ steps:
           echo "*************** TERRAFORM PLAN ******************"
           echo "******* At environment: ${env} ********"
           echo "*************************************************"
-          terraform plan -var="build_id=$_BUILD_ID" || { echo "fail" > /workspace/fail.flag; exit 1 }
+          terraform plan -var="build_id=$_BUILD_ID" || { echo "fail" > /workspace/fail.flag; exit 1; }
           cd ../../
         done
       fi 
