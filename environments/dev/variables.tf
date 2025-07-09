@@ -1,4 +1,4 @@
 variable "project" {
   type    = string
-  default = "your GCP project ID"
+  default = "cts01-pratikkamble"
 }

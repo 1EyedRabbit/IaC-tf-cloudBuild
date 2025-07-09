@@ -1,53 +1,79 @@
 steps:
+- id: 'branch name'
+  name: 'ubuntu'
+  entrypoint: 'sh'  
+  args: 
+  - '-c'
+  - | 
+      echo "***********************"
+      echo "$BRANCH_NAME"
+      echo "***********************"
+
 # Step 1: Initialize Terraform
 - id: 'tf init'
-  name: 'hashicorp/terraform:1.0.0' # Uses a public Terraform Docker image
-  script: terraform init
+  name: 'hashicorp/terraform:1.0.0'
+  entrypoint: 'sh'
+  args: 
+  - '-c'
+  - |
+      if [ -d "environments/$BRANCH_NAME/" ]; then
+        cd environments/$BRANCH_NAME
+        terraform init
+      else
+        for dir in environments/*/
+        do 
+          cd ${dir}   
+          env=${dir%*/}
+          env=${env#*/}
+          echo ""
+          echo "*************** TERRAFORM INIT ******************"
+          echo "******* At environment: ${env} ********"
+          echo "*************************************************"
+          terraform init || exit 1
+          cd ../../
+        done
+      fi 
 
 # Step 2: Run Terraform Plan
 - id: 'tf plan'
   name: 'hashicorp/terraform:1.0.0'
   entrypoint: 'sh'
-  args:
-    - '-c'
-    - |
-        BRANCH_NAME=(basename"_REF") # Get the current branch name from Cloud Build substitution variable
-        if; then
-            # If the branch matches an environment folder (e.g., 'dev', 'prod'), plan only for that environment
-            cd environments/${BRANCH_NAME}
-            terraform plan
-        else
-            # For feature branches, plan for all environments to ensure proposed changes are valid across the board
-            for dir in environments/*/
-            do
-                cd ${dir}
-                env=${dir%*/}
-                env=${env#/}
-                echo ""
-                echo "************** TERRAFORM PLAN "
-                echo " At environment: ${env} "
-                echo "******************************"
-                terraform plan |
-                | exit 1 # Fail the build if any plan fails
-                cd../../ # Go back to the root directory
-            done
-        fi
+  args: 
+  - '-c'
+  - | 
+      if [ -d "environments/$BRANCH_NAME/" ]; then
+        cd environments/$BRANCH_NAME
+        terraform plan
+      else
+        for dir in environments/*/
+        do 
+          cd ${dir}   
+          env=${dir%*/}
+          env=${env#*/}  
+          echo ""
+          echo "*************** TERRAFORM PLAN ******************"
+          echo "******* At environment: ${env} ********"
+          echo "*************************************************"
+          terraform plan || exit 1
+          cd ../../
+        done
+      fi 
 
-# Step 3: Run Terraform Apply (conditionally)
+# Step 2: Run Terraform Apply
 - id: 'tf apply'
   name: 'hashicorp/terraform:1.0.0'
   entrypoint: 'sh'
-  args:
-    - '-c'
-    - |
-        BRANCH_NAME=(basename"_REF")
-        if; then
-            # If the branch matches an environment folder, apply the changes
-            cd environments/${BRANCH_NAME}
-            terraform apply -auto-approve # Automatically approves the plan
-        else
-            # For feature branches, explicitly skip the apply step
-            echo "*************************************************** SKIPPING APPLYING "
-            echo "Branch '$BRANCH_NAME' does not represent an official environment."
-            echo "******************************************************************"
-        fi
+  args: 
+  - '-c'
+  - | 
+      if [ -d "environments/$BRANCH_NAME/" ]; then
+        cd environments/$BRANCH_NAME      
+        terraform apply -auto-approve
+      else
+        echo "***************************** SKIPPING APPLYING *******************************"
+        echo "Branch '$BRANCH_NAME' does not represent an official environment."
+        echo "*******************************************************************************"
+      fi
+
+options:
+  logging: CLOUD_LOGGING_ONLY

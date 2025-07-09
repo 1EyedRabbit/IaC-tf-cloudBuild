@@ -1,1 +1,1 @@
-project="your GCP Project ID"
+project="cts01-pratikkamble"
