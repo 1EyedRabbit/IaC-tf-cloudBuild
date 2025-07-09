@@ -12,7 +12,7 @@ resource "google_compute_instance" "http_server" {
 
   boot_disk {
     initialize_params {
-      image = "ubuntu-2404-lts-amd64/ubuntu-2404-noble-amd64-v20250703"
+      image = "ubuntu-2404-noble-amd64-v20250703"
     }
   }
 
