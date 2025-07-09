@@ -88,7 +88,6 @@ steps:
           terraform destroy -var="build_id=$_BUILD_ID" -auto-approve
         fi
   waitFor: ['-']
-  ignoreExitStatus: true
 
 options:
   logging: CLOUD_LOGGING_ONLY
