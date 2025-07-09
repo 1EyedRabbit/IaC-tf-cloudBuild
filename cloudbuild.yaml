@@ -1,3 +1,6 @@
+substitutions:
+  _BUILD_ID: $BUILD_ID
+
 steps:
 - id: 'branch name'
   name: 'ubuntu'
@@ -68,7 +71,7 @@ steps:
   - | 
       if [ -d "environments/$BRANCH_NAME/" ]; then
         cd environments/$BRANCH_NAME      
-        terraform apply -var="build_id="$BUILD_ID" -auto-approve
+        terraform apply -var="build_id="$_BUILD_ID" -auto-approve
       else
         echo "***************************** SKIPPING APPLYING *******************************"
         echo "Branch '$BRANCH_NAME' does not represent an official environment."
@@ -85,7 +88,7 @@ steps:
         if [ "$BUILD_STATUS" != "SUCCESS" ]; then
           cd environments/$BRANCH_NAME
           terraform init
-          terraform destroy -var="build_id=$BUILD_ID" -auto-approve
+          terraform destroy -var="build_id=$_BUILD_ID" -auto-approve
         fi
   waitFor: ['-']
 
