@@ -125,7 +125,7 @@ https://github.com/YOUR_GITHUB_USERNAME/IaC-tf-cloudBuild
 - On GitHub, navigate to your forked repository's "Pull requests" tab.
 - Click "New pull request."
 - For the base repository, select your forked repository. For base, select prod. For compare, select dev. This creates a pull request to merge your dev branch changes into prod.
-- Enter a title (e.g., "Promoting networking changes to production") and click "Create pull request."
+- Enter a title and click "Create pull request."
 - Review the proposed changes and the terraform plan details provided by the Cloud Build check.
 - Click "Merge pull request," then "Confirm merge." This action will merge your dev branch into the prod branch.
 - Navigate to the Cloud Build History page in the GCP Console. Observe that a new Cloud Build has been triggered for your prod branch. The tf apply step will now execute, provisioning or updating your production infrastructure.
