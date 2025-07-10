@@ -38,4 +38,16 @@ This project focuses on establishing a CI/CD pipeline for managing Google Cloud 
 
 ## How to make this work ?
 
+1. Log in to your GCP account, set your project ID and enable the necessary APIs (if not done already)
+```bash
+export PROJECT_ID="your-gcp-project-id"
+```
+2. Configure Git with your name and email in Cloud Shell. This is important for identifying commit authors in your GitHub repository.
+```bash
+git config --global user.email "your-email@example.com"
+git config --global user.name "Your Name"
+```
+3. Fork/Clone this repository
+- 
+
 ## Test it out and validate
