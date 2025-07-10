@@ -15,7 +15,8 @@ This project focuses on establishing a CI/CD pipeline for managing Google Cloud 
     - backend.tf
 - modules/
   - firewall/
-  - main.tf
+  - http_server
+  - vpc
 - cloudbuild.yaml
 
 `environments/`: Contains subfolders (`dev`, `prod`) for logical separation of infrastructure configurations for different environments. Each subfolder has its own Terraform configuration.

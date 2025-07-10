@@ -1,3 +1,6 @@
+substitutions:
+  _BUILD_ID: $BUILD_ID
+
 steps:
 - id: 'branch name'
   name: 'ubuntu'
@@ -43,7 +46,7 @@ steps:
   - | 
       if [ -d "environments/$BRANCH_NAME/" ]; then
         cd environments/$BRANCH_NAME
-        terraform plan
+        terraform plan -var="build_id=$_BUILD_ID" || echo "fail" > /workspace/fail.flag
       else
         for dir in environments/*/
         do 
@@ -54,7 +57,7 @@ steps:
           echo "*************** TERRAFORM PLAN ******************"
           echo "******* At environment: ${env} ********"
           echo "*************************************************"
-          terraform plan || exit 1
+          terraform plan -var="build_id=$_BUILD_ID" || { echo "fail" > /workspace/fail.flag; exit 1; }
           cd ../../
         done
       fi 
@@ -68,12 +71,29 @@ steps:
   - | 
       if [ -d "environments/$BRANCH_NAME/" ]; then
         cd environments/$BRANCH_NAME      
-        terraform apply -auto-approve
+        terraform apply -var="build_id=$_BUILD_ID" -auto-approve || echo "fail" > /workspace/fail.flag
       else
         echo "***************************** SKIPPING APPLYING *******************************"
         echo "Branch '$BRANCH_NAME' does not represent an official environment."
         echo "*******************************************************************************"
       fi
+
+# This is to delete all resources created in case the Build job fails 
+- id: 'rollback-on-failure'
+  name: 'hashicorp/terraform:1.0.0'
+  entrypoint: 'sh'
+  args:
+    - '-c'
+    - |
+        if [ -f /workspace/fail.flag ]; then
+          echo "Detected build failure — rolling back this build's resources..."
+          cd environments/$BRANCH_NAME
+          terraform init
+          terraform destroy -var="build_id=$_BUILD_ID" -auto-approve || echo "Rollback failed."
+        else
+          echo "Build succeeded — skipping rollback."
+        fi
+  waitFor: ['-']
 
 options:
   logging: CLOUD_LOGGING_ONLY

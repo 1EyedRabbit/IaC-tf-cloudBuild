@@ -3,7 +3,7 @@ locals {
 }
 
 resource "google_compute_firewall" "allow-http" {
-  name    = "${local.network}-allow-http"
+  name    = "${local.network}-${var.build_id}-allow-http"
   network = "${local.network}"
   project = "${var.project}"
 
@@ -14,4 +14,5 @@ resource "google_compute_firewall" "allow-http" {
 
   target_tags   = ["http-server"]
   source_ranges = ["0.0.0.0/0"]
+
 }
