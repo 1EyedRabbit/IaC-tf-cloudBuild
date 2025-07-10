@@ -1,4 +1,9 @@
 variable "project" {
   type    = string
-  default = "your GCP project ID"
+  default = "cts01-pratikkamble"
+}
+
+variable "build_id" {
+  type        = string
+  description = "The Cloud Build build ID for resource isolation"
 }
